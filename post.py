@@ -36,7 +36,6 @@ def sent_data():
     provider = providers[random.randint(0,4)]
     email = name.lower() + str(random.randint(1,2500)) + "@" + provider
 
-    name,password,provider,email
     myobj = {"nombre": name,"email": email, "password": password}
     response = requests.post(url, data = myobj)
     print(response)
